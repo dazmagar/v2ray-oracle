@@ -1,13 +1,14 @@
 #!/bin/bash
 set -e
 
-# Args: V2RAY_HOST (FQDN), PANEL_PORT, PANEL_BASE_PATH (e.g. /xui-abc/ or empty)
+# Args: V2RAY_HOST (FQDN), PANEL_PORT, PANEL_BASE_PATH, XUI_IMAGE
 V2RAY_HOST="${1:-}"
 PANEL_PORT="${2:-2053}"
 PANEL_BASE_PATH="${3:-}"
+XUI_IMAGE="${4:-}"
 
 container_name="3x-ui"
-image="ghcr.io/mhsanaei/3x-ui:latest"
+image="${XUI_IMAGE:?XUI_IMAGE (4th arg) is required}"
 LOG_FILE="/tmp/3x-ui-container-deploy.log"
 
 echo "Starting 3x-ui container deployment..." | tee "${LOG_FILE}"

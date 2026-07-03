@@ -1,9 +1,9 @@
-# Run before instance recreation: terraform apply -target="module.backup"
+# Runs when instance_id or instance_ip changes (e.g. VM recreated).
+# On-demand backup while VM unchanged: terraform apply -replace="module.backup.null_resource.backup_xui"
 resource "null_resource" "backup_xui" {
   triggers = {
     instance_id = var.instance_id
     instance_ip = var.instance_ip
-    timestamp   = timestamp()
   }
 
   provisioner "local-exec" {

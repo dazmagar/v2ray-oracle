@@ -63,5 +63,9 @@ variable "panel_host" {
 variable "cron_restart_schedule" {
   type        = string
   description = "Cron schedule for 3x-ui container restart"
-  default     = "0 3 * * *"
+}
+
+variable "xui_image" {
+  type        = string
+  description = "Pinned 3x-ui Docker image (tag, not latest)"
 }

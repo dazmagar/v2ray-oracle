@@ -101,13 +101,13 @@ resource "oci_core_instance" "instance" {
     private_ip             = element(concat(var.private_ips, [""]), length(var.private_ips) == 0 ? 0 : count.index)
     skip_source_dest_check = var.skip_source_dest_check
     subnet_id              = data.oci_core_subnet.instance_subnet[count.index % length(data.oci_core_subnet.instance_subnet)].id
-    nsg_ids                = var.primary_vnic_nsg_ids
+    nsg_ids                = [oci_core_network_security_group.v2ray.id]
     freeform_tags          = local.merged_freeform_tags
     defined_tags           = var.defined_tags
   }
 
   metadata = {
-    ssh_authorized_keys = var.ssh_public_keys != null ? var.ssh_public_keys : (var.ssh_authorized_keys != null ? file(var.ssh_authorized_keys) : null)
+    ssh_authorized_keys = file(var.publickeypath)
     user_data           = var.user_data
   }
 
@@ -122,6 +122,14 @@ resource "oci_core_instance" "instance" {
 
   timeouts {
     create = var.instance_timeout
+  }
+
+  lifecycle {
+    ignore_changes = [
+      source_details,
+      fault_domain,
+      metadata,
+    ]
   }
 }
 

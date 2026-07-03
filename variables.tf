@@ -94,11 +94,6 @@ variable "source_type" {
   default     = "image"
 }
 
-variable "ssh_public_keys" {
-  type        = string
-  description = "Path to SSH public key file or inline key content"
-}
-
 variable "public_ip" {
   type        = string
   description = "Public IP: NONE, RESERVED, or EPHEMERAL"
@@ -132,6 +127,11 @@ variable "user" {
   description = "SSH user for instance access (e.g. ubuntu)"
 }
 
+variable "publickeypath" {
+  type        = string
+  description = "Path to SSH public key for instance access"
+}
+
 variable "privatekeypath" {
   type        = string
   description = "Path to private SSH key for instance access"
@@ -146,47 +146,55 @@ variable "v2ray_host" {
 variable "panel_port" {
   type        = number
   description = "3x-ui panel listen port"
-  default     = 2053
 }
 
 variable "panel_base_path" {
   type        = string
   description = "3x-ui panel base path (e.g. /xui-abc/). Empty = /panel/"
-  default     = ""
 }
 
 variable "enable_caddy_tls" {
   type        = bool
   description = "Use Caddy reverse proxy with TLS for panel on 443"
-  default     = true
 }
 
 variable "caddy_use_internal_tls" {
   type        = bool
-  description = "Use Caddy self-signed cert (no Let's Encrypt). Set true if ACME cannot reach host; set false when port 80 is open from internet for LE."
+  description = "OCI-only: Caddy self-signed cert instead of Let's Encrypt"
   default     = true
 }
 
 variable "proxy_port" {
   type        = number
   description = "Port for VLESS/Reality proxy (Xray). Set inbound port in 3x-ui to this."
-  default     = 8443
+}
+
+variable "firewall_tcp_ports" {
+  type        = list(number)
+  description = "NSG: allowed TCP ports (proxy_port always merged; panel_port when enable_caddy_tls is false)"
+}
+
+variable "firewall_udp_ports" {
+  type        = list(number)
+  description = "NSG: allowed UDP ports"
 }
 
 variable "panel_host" {
   type        = string
   description = "Panel host for Caddy: subdomain (e.g. ui) or full FQDN. Empty = panel.<v2ray_host>"
-  default     = ""
 }
 
 variable "cron_restart_schedule" {
   type        = string
   description = "Cron schedule for 3x-ui container restart"
-  default     = "0 3 * * *"
+}
+
+variable "xui_image" {
+  type        = string
+  description = "Pinned 3x-ui Docker image (tag, not latest)"
 }
 
 variable "backup_path" {
   type        = string
   description = "Local path for 3x-ui panel backup"
-  default     = "./modules/backup/xui_backup"
 }

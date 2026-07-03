@@ -121,14 +121,19 @@ variable "resource_platform" {
   default = "linux"
 }
 
-variable "ssh_authorized_keys" {
-  type    = string
-  default = null
+variable "publickeypath" {
+  type        = string
+  description = "Path to SSH public key file for instance access"
 }
 
-variable "ssh_public_keys" {
-  type    = string
-  default = null
+variable "firewall_tcp_ports" {
+  type        = list(string)
+  description = "Allowed TCP ports for NSG (computed in root module)"
+}
+
+variable "firewall_udp_ports" {
+  type        = list(string)
+  description = "Allowed UDP ports for NSG (computed in root module)"
 }
 
 variable "user_data" {
@@ -177,11 +182,6 @@ variable "subnet_ocids" {
 variable "vnic_name" {
   type    = string
   default = ""
-}
-
-variable "primary_vnic_nsg_ids" {
-  type    = list(string)
-  default = null
 }
 
 variable "attachment_type" {
