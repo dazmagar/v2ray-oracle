@@ -45,18 +45,18 @@ variable "defined_tags" {
 # Compute instance (OCI)
 variable "instance_ad_number" {
   type        = number
-  description = "Availability domain number (1–3). Matches AD-1/2/3 in region"
+  description = "Availability domain number (1-3). Matches AD-1/2/3 in region"
   default     = 3
 }
 
 variable "instance_fd_number" {
   type        = number
-  description = "Fault domain (1–3). null = auto"
+  description = "Fault domain (1-3). null = auto"
   default     = null
 
   validation {
     condition     = var.instance_fd_number == null || (var.instance_fd_number >= 1 && var.instance_fd_number <= 3)
-    error_message = "Fault domain must be 1–3 or null"
+    error_message = "Fault domain must be 1-3 or null"
   }
 }
 
@@ -177,6 +177,12 @@ variable "firewall_tcp_ports" {
 variable "firewall_udp_ports" {
   type        = list(number)
   description = "NSG: allowed UDP ports"
+}
+
+variable "p2w_wireguard_port" {
+  type        = number
+  default     = 51821
+  description = "Dedicated WireGuard UDP port for the peer2weird egress tunnel"
 }
 
 variable "panel_host" {

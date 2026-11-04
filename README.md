@@ -1,4 +1,4 @@
-# V2Ray 3x-ui – Terraform deployment for Oracle Cloud (OCI)
+# V2Ray 3x-ui - Terraform deployment for Oracle Cloud (OCI)
 
 Deploy a V2Ray/Xray VPN server with **3x-ui** web panel on Oracle Cloud Infrastructure.  
 Logic mirrors the [GCP version](../v2ray-gcp).
@@ -40,14 +40,14 @@ Logic mirrors the [GCP version](../v2ray-gcp).
    ```bash
    terraform output panel_url
    ```
-   Default login: `admin` / `admin` — change in Panel Settings.
+   Default login: `admin` / `admin` - change in Panel Settings.
 
 ## Configuration
 
-- **v2ray_host** – IP or FQDN of the server (client links and Caddy server name). Point DNS A record to the instance public IP.
-- **xui_image** – pinned 3x-ui Docker image tag (required). Example: `ghcr.io/mhsanaei/3x-ui:v3.4.2`. Do not use `:latest`; bump the tag in `terraform.tfvars` when upgrading, then `terraform apply` (re-runs the 3x-ui container via `null_resource.run_3x_ui` trigger).
-- **Firewall (NSG):** `firewall_tcp_ports` / `firewall_udp_ports` in `terraform.tfvars`; **`proxy_port` is always merged into TCP**, **`panel_port` is merged when `enable_caddy_tls` is false** (direct panel). With Caddy enabled, `panel_port` is not opened on the NSG (panel only via HTTPS on 443).
-- **caddy_use_internal_tls** – OCI-only: use Caddy self-signed cert (`true`) or Let's Encrypt (`false` when port 80 is reachable from the internet).
+- **v2ray_host** - IP or FQDN of the server (client links and Caddy server name). Point DNS A record to the instance public IP.
+- **xui_image** - pinned 3x-ui Docker image tag (required). Example: `ghcr.io/mhsanaei/3x-ui:v3.4.2`. Do not use `:latest`; bump the tag in `terraform.tfvars` when upgrading, then `terraform apply` (re-runs the 3x-ui container via `null_resource.run_3x_ui` trigger).
+- **Firewall (NSG):** `firewall_tcp_ports` / `firewall_udp_ports` in `terraform.tfvars`; **`proxy_port` is always merged into TCP**, **`panel_port` is merged when `enable_caddy_tls` is false** (direct panel). With Caddy enabled, `panel_port` is not opened on the NSG (panel only via HTTPS on 443). UDP 51821 is reserved for the peer2weird WireGuard egress peer.
+- **caddy_use_internal_tls** - OCI-only: use Caddy self-signed cert (`true`) or Let's Encrypt (`false` when port 80 is reachable from the internet).
 
 ## Backup and restore
 

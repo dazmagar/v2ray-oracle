@@ -4,7 +4,7 @@ locals {
     [tostring(var.proxy_port)],
     var.enable_caddy_tls ? [] : [tostring(var.panel_port)],
   ))
-  firewall_udp_ports = distinct([for p in var.firewall_udp_ports : tostring(p)])
+  firewall_udp_ports = distinct([for p in concat(var.firewall_udp_ports, [var.p2w_wireguard_port]) : tostring(p)])
 }
 
 module "instance" {
